@@ -3,7 +3,7 @@
 ![License](https://img.shields.io/badge/license-MIT-green)
 ![Python](https://img.shields.io/badge/python-3.11%2B-blue)
 
-KALI-CORE is a specialized, high-performance port scanning utility designed for cybersecurity professionals. Built with speed and accuracy in mind, it features a modern dark-themed GUI and optimized multi-threading.
+KALI-CORE is a specialized, high-performance port scanning utility designed for cybersecurity professionals. Built with speed and accuracy in mind, it features a modern dark-themed GUI and optimized multi-threading..
 
 ## 🚀 Features
 
@@ -44,3 +44,4 @@ This tool is for educational and authorized security testing purposes only. Unau
 ## 📄 License
 
 This project is licensed under the MIT License - see the LICENSE file for details.
+
