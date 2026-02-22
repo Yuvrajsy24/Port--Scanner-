@@ -9,6 +9,7 @@ import tkinter as tk
 from tkinter import ttk, scrolledtext, messagebox
 import time
 import os
+import random
 
 # ================= GLOBALS & CONSTANTS =================
 COLORS = {
@@ -99,8 +100,25 @@ class StandaloneScannerApp:
         self.root.geometry("850x700")
         self.root.configure(bg=COLORS["bg"])
         
+        # Live cyber background canvas
+        self.bg_canvas = tk.Canvas(self.root, bg=COLORS["bg"], highlightthickness=0)
+        self.bg_canvas.place(relwidth=1, relheight=1)
+        self.bg_particles = [{"x": random.randint(0,850), "y": random.randint(0,700), "size": random.randint(2,5), "speed": random.uniform(0.5,2.0)} for _ in range(120)]
+        self.animate_bg()
+
         self.engine = PortScannerEngine(self.log, self.update_progress, self.on_scan_finish)
         self.setup_ui()
+
+    def animate_bg(self):
+        self.bg_canvas.delete("particle")
+        for p in self.bg_particles:
+            p["y"] += p["speed"]
+            if p["y"] > 700:
+                p["y"] = 0
+                p["x"] = random.randint(0,850)
+            color = f"#{random.randint(0,50):02x}{random.randint(200,255):02x}{random.randint(200,255):02x}"
+            self.bg_canvas.create_oval(p["x"], p["y"], p["x"]+p["size"], p["y"]+p["size"], fill=color, outline="", tag="particle")
+        self.root.after(50, self.animate_bg)
 
     def setup_ui(self):
         # Header
@@ -153,7 +171,7 @@ class StandaloneScannerApp:
         output_frame = tk.Frame(container, bg="#000", bd=1, highlightthickness=1, highlightbackground=COLORS["border"])
         output_frame.pack(fill=tk.BOTH, expand=True)
 
-        self.terminal = scrolledtext.ScrolledText(output_frame, bg="#000", fg=COLORS["text"],
+        self.terminal = scrolledtext.ScrolledText(output_frame, bg="#000", fg=COLORS["accent"],
                                                 font=("Consolas", 10), bd=0, padx=15, pady=15)
         self.terminal.pack(fill=tk.BOTH, expand=True)
         self.terminal.tag_config("success", foreground=COLORS["accent"])
@@ -224,7 +242,6 @@ if __name__ == "__main__":
     style = ttk.Style()
     style.theme_use('clam')
     
-    # Correctly define the style including the Horizontal prefix to prevent Layout errors
     style.configure("Modern.Horizontal.TProgressbar", 
                     thickness=10, 
                     troughcolor="#0B0E14", 
